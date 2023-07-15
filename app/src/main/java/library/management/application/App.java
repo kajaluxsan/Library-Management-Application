@@ -3,12 +3,68 @@
  */
 package library.management.application;
 
+import java.util.Scanner;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        Library library = new Library();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("welcome to the Library");
+            System.out.println("Press 1 to add a Book");
+            System.out.println("Press 2 to add a Client");
+            System.out.println("Press 3 to borrow a Book");
+            System.out.println("Press 4 to return a Book");
+            System.out.println("Press 5 to quit");
+
+            int selectedNumber = scanner.nextInt();
+            if (selectedNumber == 5) {
+                break;
+            }
+
+            switch (selectedNumber){
+                case 1:
+                    System.out.println("Enter the Title of the Book");
+                    Book book = new Book(scanner.next());
+                    library.addBook(book);
+                    System.out.println(book.getTitle() + " added to the Library");
+                    break;
+
+                case 2:
+                    System.out.println("Enter the Client's name");
+                    Client client =new Client(scanner.next());
+                    library.addClient(client);
+                    System.out.println(client.getName() + " added as a member of the Library");
+                    break;
+
+                case 3:
+                    System.out.println("Enter the name of the Book");
+                    String name = scanner.nextLine();
+                    Book book1 = new Book(name);
+                    System.out.println("Enter Client's name");
+                    Client client1 = new Client(scanner.nextLine());
+                    library.borrowBook(book1, client1);
+                    System.out.println(book1.getTitle() + " is borrowed by " + client1.getName());
+                    break;
+
+                case 4:
+                    System.out.println("Enter the name of the Book");
+                    Book book2 = new Book(scanner.nextLine());
+                    System.out.println("Enter the Client's name");
+                    Client client2 = new Client(scanner.nextLine());
+                    library.returnBook(book2, client2);
+                    System.out.println(book2.getTitle() + " is returned by " + client2.getName());
+                    break;
+
+                default:
+                    System.out.println("Invalid Choose");
+                    break;
+            }
+        }
+
+        scanner.close();
     }
 }

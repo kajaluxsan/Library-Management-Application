@@ -1,7 +1,5 @@
 package library.management.application;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +9,7 @@ public class Library {
     private List<Client> clients;
     private HashMap<Book, Client> borrowedBooks;
 
-    public Library(){
+    public Library() {
         this.books = new ArrayList<>();
         this.clients = new ArrayList<>();
         this.borrowedBooks = new HashMap<>();
@@ -25,7 +23,7 @@ public class Library {
         return clients;
     }
 
-    public int getNumberOfClients(){
+    public int getNumberOfClients() {
         return clients.size();
     }
 
@@ -33,40 +31,47 @@ public class Library {
         return borrowedBooks;
     }
 
-    public void addBook(String title){
-        this.books.add(new Book(title));
+    public void addBook(Book book) {
+        this.books.add(book);
     }
 
-    public void removeBook(String title){
-        Book book = new Book(title);
-        if(books.contains(book)){
+    public void removeBook(Book book) {
+        if (books.contains(book)) {
             books.remove(book);
-        }else {
-            System.out.println(title + "Book not found");
+        } else {
+            System.out.println("Book not found");
         }
     }
 
-    public void borrowBook(String title, String clientName){
-        Book book = new Book(title);
-        Client client = new Client(clientName);
-        if(this.books.contains(book) && book.getIsAvailable()){
-            if(this.clients.contains(client)){
+    public void borrowBook(Book book, Client client) {
+        if (this.books.contains(book) && book.getIsAvailable()) {
+            if (this.clients.contains(client)) {
                 book.setIsAvailable(false);
                 this.borrowedBooks.put(book, client);
+                client.addToBorrowedList(book);
             }
         } else {
-            System.out.println(title + "Book not available");
+            System.out.println("Book not available");
         }
     }
 
-    public void returnBook(String title) {
-        Book book = new Book(title);
-        if(this.books.contains(book) && !book.getIsAvailable()){
-            book.setIsAvailable(true);
-        }else {
-            System.out.println(title + "unexpected title" );
+    public void returnBook(Book book, Client client) {
+        if (this.borrowedBooks.containsKey(book) && !book.getIsAvailable()) {
+            if (clients.contains(client) && borrowedBooks.get(book) == client) {
+                book.setIsAvailable(true);
+                borrowedBooks.remove(book);
+                client.removeFromBorrowedList(book);
+            }
+        } else {
+            System.out.println("unexpected Book-Title");
         }
     }
 
+    public void addClient(Client client) {
+        this.clients.add(client);
+    }
 
+    public void removeClient(Client client) {
+        this.clients.remove(client);
+    }
 }
