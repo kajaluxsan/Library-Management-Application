@@ -43,20 +43,29 @@ public class Library {
         }
     }
 
-    public void borrowBook(Book book, Client client) {
-        if (this.books.contains(book) && book.getIsAvailable()) {
-            if (this.clients.contains(client)) {
-                book.setIsAvailable(false);
-                this.borrowedBooks.put(book, client);
-                client.addToBorrowedList(book);
-            }
+    public void borrowBook(String bookTitle, String clientName) {
+        Book book = books.stream()
+                .filter(b -> b.getTitle().equals(bookTitle)).findFirst().orElse(null);
+
+        Client client = clients.stream()
+                .filter(c -> c.getName().equals(clientName)).findFirst().orElse(null);
+
+        if(book == null){
+            System.out.println("book not found");
+        } else if (client == null) {
+            System.out.println("client not found");
+        } else if (!book.getIsAvailable()){
+            System.out.println("book not available");
         } else {
-            System.out.println("Book not available");
+            borrowedBooks.put(book,client);
+            client.addToBorrowedList(book);
+            book.setIsAvailable(false);
+            System.out.println(bookTitle + " borrowed by " + clientName);
         }
     }
 
     public void returnBook(Book book, Client client) {
-        if (this.borrowedBooks.containsKey(book) && !book.getIsAvailable()) {
+        if (this.borrowedBooks.containsKey(book) && Boolean.TRUE.equals(!book.getIsAvailable())) {
             if (clients.contains(client) && borrowedBooks.get(book) == client) {
                 book.setIsAvailable(true);
                 borrowedBooks.remove(book);
@@ -67,8 +76,16 @@ public class Library {
         }
     }
 
-    public void addClient(Client client) {
-        this.clients.add(client);
+    public void addClient(String clientName) {
+        boolean isNameUnique = clients.stream()
+                .noneMatch(c -> c.getName().equals(clientName));
+
+        if(isNameUnique){
+            this.clients.add(new Client(clientName));
+            System.out.println(clientName + " is added as a member of the Library");
+        } else {
+            System.out.println("A client with this name already exists. please use a unique name.");
+        }
     }
 
     public void removeClient(Client client) {
