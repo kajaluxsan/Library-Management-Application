@@ -6,6 +6,7 @@ public class Book {
     private String title;
     private Boolean isAvailable;
 
+
     public Book(String title) {
         this.title = title;
         this.isAvailable = true;
@@ -22,6 +23,7 @@ public class Book {
     public void setIsAvailable(Boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
+
 
     @Override
     public boolean equals(Object obj) {

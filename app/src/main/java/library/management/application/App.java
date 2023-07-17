@@ -47,11 +47,10 @@ public class App {
 
                 case 4:
                     System.out.println("Enter the name of the Book");
-                    Book book2 = new Book(scanner.nextLine());
+                    String bookName =scanner.nextLine();
                     System.out.println("Enter the Client's name");
-                    Client client2 = new Client(scanner.nextLine());
-                    library.returnBook(book2, client2);
-                    System.out.println(book2.getTitle() + " is returned by " + client2.getName());
+                    String clientName1 = scanner.nextLine();
+                    library.returnBook(bookName, clientName1);
                     break;
 
                 default:

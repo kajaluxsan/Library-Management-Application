@@ -64,15 +64,22 @@ public class Library {
         }
     }
 
-    public void returnBook(Book book, Client client) {
-        if (this.borrowedBooks.containsKey(book) && Boolean.TRUE.equals(!book.getIsAvailable())) {
-            if (clients.contains(client) && borrowedBooks.get(book) == client) {
-                book.setIsAvailable(true);
-                borrowedBooks.remove(book);
-                client.removeFromBorrowedList(book);
-            }
+    public void returnBook(String bookTitle, String clientName) {
+        Book book = books.stream().filter(b -> b.getTitle().equals(bookTitle)).findFirst().orElse(null);
+
+        Client client = clients.stream().filter(c -> c.getName().equals(clientName)).findFirst().orElse(null);
+
+        if(book == null){
+            System.out.println("book not exists");
+        } else if (client == null) {
+            System.out.println("invalid Client name");
+        } else if(book.getIsAvailable()){
+            System.out.println("book is not borrowed");
         } else {
-            System.out.println("unexpected Book-Title");
+            book.setIsAvailable(true);
+            borrowedBooks.remove(book);
+            client.removeFromBorrowedList(book);
+            System.out.println(bookTitle + " is returned by " + clientName);
         }
     }
 
