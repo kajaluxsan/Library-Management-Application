@@ -35,9 +35,12 @@ public class Library {
         this.books.add(book);
     }
 
-    public void removeBook(Book book) {
-        if (books.contains(book)) {
+    public void removeBook(String bookTitle) {
+        Book book = books.stream().filter(b -> b.getTitle().equals(bookTitle)).findFirst().orElse(null);
+
+        if (book != null) {
             books.remove(book);
+            System.out.println(bookTitle + " is removed");
         } else {
             System.out.println("Book not found");
         }
@@ -95,7 +98,14 @@ public class Library {
         }
     }
 
-    public void removeClient(Client client) {
-        this.clients.remove(client);
+    public void removeClient(String clientName) {
+        Client client = clients.stream().filter(c -> c.getName().equals(clientName)).findFirst().orElse(null);
+
+        if(client == null){
+            System.out.println(clientName + " not exits");
+        } else {
+            clients.remove(client);
+            System.out.println(clientName + " is removed");
+        }
     }
 }
